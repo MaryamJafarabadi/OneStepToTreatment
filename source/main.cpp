@@ -1,4 +1,4 @@
-#include "OneStepToTreatment.hpp"
+#include "../include/OneStepToTreatment.hpp"
 
 int main()
 {
