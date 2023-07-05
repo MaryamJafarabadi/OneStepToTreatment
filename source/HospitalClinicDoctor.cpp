@@ -1,4 +1,4 @@
-#include "HospitalClinicDoctor.hpp"
+#include "../include/HospitalClinicDoctor.hpp"
 
 bool HospitalClinicDoctor::checkStatus(std::string status_)
 {
