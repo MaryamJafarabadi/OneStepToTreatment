@@ -1,4 +1,4 @@
-#include "Document.hpp"
+#include "../include/Document.hpp"
 #include <sstream>
 
 Document::Document(std::string document)
