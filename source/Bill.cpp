@@ -1,4 +1,4 @@
-#include "Bill.hpp"
+#include "../include/Bill.hpp"
 
 Bill::Bill(int cost_, int paid_, std::string description_)
 {
