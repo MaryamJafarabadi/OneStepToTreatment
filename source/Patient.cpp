@@ -1,4 +1,4 @@
-#include "Patient.hpp"
+#include "../include/Patient.hpp"
 
 Patient::Patient(std::string name_, std::string password_, std::string email_, std::string phone_number_, Document* document_, BankCard* bank_card_)
 {
