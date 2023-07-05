@@ -1,20 +1,20 @@
-#include "OneStepToTreatment.hpp"
-#include "Patient.hpp"
-#include "SignupHandler.hpp"
-#include "PatientService.hpp"
+#include "../include/OneStepToTreatment.hpp"
+#include "../include/Patient.hpp"
+#include "../include/SignupHandler.hpp"
+#include "../include/PatientService.hpp"
 
-#include "LoginHandler.hpp"
+#include "../include/LoginHandler.hpp"
 
-#include "ChoosePackageHandler.hpp"
-#include "TreatmentPackageService.hpp"
+#include "../include/ChoosePackageHandler.hpp"
+#include "../include/TreatmentPackageService.hpp"
 
-#include "PayMoneyHandler.hpp"
+#include "../include/PayMoneyHandler.hpp"
 
-#include "ChooseSupporterHandler.hpp"
-#include "SupporterService.hpp"
+#include "../include/ChooseSupporterHandler.hpp"
+#include "../include/SupporterService.hpp"
 
-#include "SendInfoHandler.hpp"
-#include "HCD_Service.hpp"
+#include "../include/SendInfoHandler.hpp"
+#include "../include/HCD_Service.hpp"
 
 
 #include <sstream>
