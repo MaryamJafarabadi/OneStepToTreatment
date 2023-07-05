@@ -1,4 +1,4 @@
-#include "TreatmentPackage.hpp"
+#include "../include/TreatmentPackage.hpp"
 
 TreatmentPackage::TreatmentPackage()
 {
