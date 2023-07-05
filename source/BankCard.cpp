@@ -1,4 +1,4 @@
-#include "BankCard.hpp"
+#include "../include/BankCard.hpp"
 #include <sstream>
 
 BankCard::BankCard(std::string bank_card)
