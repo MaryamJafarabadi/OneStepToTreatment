@@ -1,5 +1,5 @@
-#include "Supporter.hpp"
-#include "Patient.hpp"
+#include "../include/Supporter.hpp"
+#include "../include/Patient.hpp"
 
 Supporter::Supporter()
 {
