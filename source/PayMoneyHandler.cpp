@@ -1,4 +1,4 @@
-#include "PayMoneyHandler.hpp"
+#include "../include/PayMoneyHandler.hpp"
 
 void PayMoneyHandler::PayMoney(Request* req, Patient* patient, int percentage)
 {
