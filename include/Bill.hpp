@@ -14,6 +14,8 @@ public:
     void setDebt(int precost);//
     void setPaid(int precost);//
     void checkPay();
+    int getPaid();
+    int getDept();
 };
 
 #endif
