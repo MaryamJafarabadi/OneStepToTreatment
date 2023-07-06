@@ -1,11 +1,9 @@
-#include "../include/BankCard.hpp"
+#include "BankCard.hpp"
 #include <sstream>
+#include <string>
 
-BankCard::BankCard(std::string bank_card)
+BankCard::BankCard(std::string bank_card, std::string CVV_)
 {
-    std::istringstream ss(bank_card);
-    std::string card_number, cvv;
-    ss >> card_number >> cvv;
-    CardNumber = stoi(card_number);
-    CVV = stoi(cvv);
+    CardNumber = std::stoi(bank_card);
+    CVV = std::stoi(CVV_);
 }
