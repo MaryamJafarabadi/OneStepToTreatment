@@ -3,12 +3,13 @@
 
 #include <iostream>
 
-class BankCard{
+class BankCard
+{
 private:
     int CardNumber;
     int CVV;
 public:
-    BankCard(std::string bank_card);
+    BankCard(std::string bank_card, std::string CVV_);
     bool CardExists();
 };
 
