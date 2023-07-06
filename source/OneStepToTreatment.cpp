@@ -1,77 +1,96 @@
-#include "../include/OneStepToTreatment.hpp"
-#include "../include/Patient.hpp"
-#include "../include/SignupHandler.hpp"
-#include "../include/PatientService.hpp"
-
-#include "../include/LoginHandler.hpp"
-
-#include "../include/ChoosePackageHandler.hpp"
-#include "../include/TreatmentPackageService.hpp"
-
-#include "../include/PayMoneyHandler.hpp"
-
-#include "../include/ChooseSupporterHandler.hpp"
-#include "../include/SupporterService.hpp"
-
-#include "../include/SendInfoHandler.hpp"
-#include "../include/HCD_Service.hpp"
-
+#include "OneStepToTreatment.hpp"
+#include "my_server.hpp"
 
 #include <sstream>
+#include <fstream>
+#include <string>
+
+OneStepToTreatment::OneStepToTreatment(PatientService *patient_service_, SignupHandler *signup_handler_, LoginHandler *login_handler_, TreatmentPackageService *treatment_package_service_,
+                                       ChoosePackageHandler *choose_package_handler_, PayMoneyHandler *pay_money_handler_, SupporterService *supporter_service_,
+                                       ChooseSupporterHandler *choose_supporter_handler_, HCD_Service *hcd_service_, SendInfoHandler *send_info_handler_)
+{
+    patient_service = patient_service_;
+    signup_handler = signup_handler_;
+    login_handler = login_handler_;
+    treatment_package_service = treatment_package_service_;
+    choose_package_handler = choose_package_handler_;
+    pay_money_handler = pay_money_handler_;
+    supporter_service = supporter_service_;
+    choose_supporter_handler = choose_supporter_handler_;
+    hcd_service = hcd_service_;
+    send_info_handler = send_info_handler_;
+}
 
 void OneStepToTreatment::run()
 {
-    PatientService* patient_service = new PatientService();
-    SignupHandler* signup_handler = new SignupHandler(patient_service);
-    LoginHandler* login_handler = new LoginHandler(patient_service);
-
-    TreatmentPackageService* treatment_package_service = new TreatmentPackageService();
-    ChoosePackageHandler* choose_package_handler = new ChoosePackageHandler(treatment_package_service);
-
-    PayMoneyHandler* pay_money_handler = new PayMoneyHandler();
-
-    SupporterService* supporter_service = new SupporterService();
-    ChooseSupporterHandler* choose_supporter_handler = new ChooseSupporterHandler(supporter_service);
-
-    HCD_Service* hcd_service = new HCD_Service();
-    SendInfoHandler* send_info_handler = new SendInfoHandler(hcd_service);
-
-    while(true)
+    srand(time(NULL)); // for rand
+    signup_handler->setOSTT(this);
+    login_handler->setOSTT(this);
+    choose_package_handler->setOSTT(this);
+    pay_money_handler->setOSTT(this);
+    choose_supporter_handler->setOSTT(this);
+    send_info_handler->setOSTT(this);
+    try
     {
-        std::cout << "********** Welcome to One Step To Treatment website! **********\n";
-        std::cout << "signup or login first!\n";
-        std::cout << "for signup enter: signup <name password email PhoneNumber>\n";
-        std::cout << "for login enter: login <password email>\n";
-        std::string input;
-        std::cin >> input;
-        std::istringstream ss(input);
-        std::string token;
-        ss >> token;
-        Patient* patient;
-        if(token == "signup")
-        {
-            std::string document;
-            std::cout << "enter your document including age, health history, or any drug you are taken...\n";
-            std::cin >> document;
-            std::string bank_card;
-            std::cout << "enter your bank card number and the CVV seperating by space:\n";
-            std::cin >> bank_card;
-            patient = signup_handler->EnterSignupData(input, document, bank_card);
-
-        }
-        else if(token == "login")
-        {
-            patient = login_handler->EnterLoginData(input);
-        }
-
-        std::string package;
-        std::cout << "choose your ideal package:\n";
-        std::cin >> package;
-        Request* request = choose_package_handler->ChoosePackageTreatment(patient, stoi(package));
-        pay_money_handler->PayMoney(request, patient, PERCENTAGE);
-        Supporter* supporter = choose_supporter_handler->ChooseSupporter(request, patient); 
-        send_info_handler->SendPatientInfo(supporter, patient, request);
+        MyServer server(5000);
+        server.get("/", new ShowPage("html/main.html"));
+        server.get("/main_css", new ShowPage("html/css/main.css"));
+        server.get("/icon", new ShowImage("html/images/icon.png"));
+        server.get("/main_background", new ShowImage("html/images/mainpage.jpg"));
+        server.get("/background", new ShowImage("html/images/main2.avif"));
+        server.get("/show_signup", new ShowPage("html/signup.html"));
+        server.get("/signup", signup_handler);
+        server.get("/show_login", new ShowPage("html/login.html"));
+        server.get("/login", login_handler);
+        server.get("/show_package", new ShowPage("html/package.html"));
+        server.get("/midwifery", new ShowImage("html/images/midwifery.jpg"));
+        server.get("/orthopedics", new ShowImage("html/images/orthopedics.jpeg"));
+        server.get("/General", new ShowImage("html/images/General surgery.jpg"));
+        server.get("/ENT", new ShowImage("html/images/ENT.jpg"));
+        server.get("/diabet", new ShowImage("html/images/diabet.jpg"));
+        server.get("/kidney", new ShowImage("html/images/kidney.jpg"));
+        server.get("/package", choose_package_handler);
+        server.get("/show_paymoney", new ShowPage("html/payMoney.html"));
+        server.get("/payMoneyBackground", new ShowImage("html/images/moneyBackground.jpg"));
+        server.get("/paymoney", pay_money_handler);
+        server.get("/supporter", choose_supporter_handler);
+        server.get("/sendInfo", send_info_handler);
+        server.get("/Thank_show", new ShowPage("html/thanks.html"));
+        server.get("/thankyou", new ShowImage("html/images/thankyou.jpg"));
+        server.run();
     }
+    catch (const Server::Exception &e)
+    {
+        std::cerr << e.getMessage() << std::endl;
+    }
+}
 
-    
+void OneStepToTreatment::setPatient(Patient *patient_)
+{
+    current_patient = patient_;
+}
+
+Patient *OneStepToTreatment::getPatient()
+{
+    return current_patient;
+}
+
+void OneStepToTreatment::setRequest(PatientRequest *req_)
+{
+    req = req_;
+}
+
+PatientRequest *OneStepToTreatment::getRequest()
+{
+    return req;
+}
+
+void OneStepToTreatment::setSupporter(Supporter *supporter_)
+{
+    supporter = supporter_;
+}
+
+Supporter *OneStepToTreatment::getSupporter()
+{
+    return supporter;
 }
